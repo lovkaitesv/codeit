@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt")
 const Page = require("../models/models")
 
 class AdminController {
-    async auth(req, res, next) {
+    async auth(req, res) {
         try {
             const pass = req.body.password
             res.cookie('auth', await bcrypt.hash(pass, 6), {
@@ -16,7 +16,7 @@ class AdminController {
         }
     }
 
-    async check(req, res, next) {
+    async check(req, res) {
         try {
             const {auth} = req.cookies
             if (await bcrypt.compare(process.env.PASSWORD, auth)) {

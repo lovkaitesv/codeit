@@ -1,30 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Admin panel</title>
     <meta charset="utf-8" />
+    <link href="style.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.0/dist/trix.css">
+    <script type="text/javascript" src="https://unpkg.com/trix@2.0.0/dist/trix.umd.min.js"></script>
 </head>
-<body>
+<body class="wrapper">
     <h1>Admin panel</h1>
     <p>Create page</p>
-    <form action="/admin" method="POST">
+    <form action="/admin" method="POST" class="wrapper">
         <label for="title">Title</label>
-        <input type="text" id="title" name="title" />
+        <input type="text" id="title" name="title" value="<%- (typeof info !== 'undefined') ? info.title : ''%>"/>
 
         <label for="description">Description</label>
-        <input type="text" id="description" name="description" />
+        <input type="text" id="description" name="description" value="<%- (typeof info !== 'undefined') ? info.description : ''%>"/>
 
         <label for="slug">Slug</label>
-        <input type="text" id="slug" name="slug" />
+        <input type="text" id="slug" name="slug" value="<%- (typeof info !== 'undefined') ? info.slug : ''%>"/>
 
-        <label for="content">Content</label>
-        <textarea id="content" name="content" rows="4" cols="50" ></textarea>
+        <input id="x" type="hidden" name="content" value="<%- (typeof info !== 'undefined') ? info.content : ''%>">
+        <trix-editor input="x"></trix-editor>
+
+        <% if(typeof error !== 'undefined') {%>
+            <p class="error"><%=error%></p>
+        <%}%>
 
         <button type="submit">Create page</button>
     </form>
-    <% pages.forEach(function(page) { %>
-        <a href="<%= page.slug %>"><%= page.slug %></a>
-        <button>Delete</button>
-    <% }) %>
+    <div class="wrapper">
+        <% pages.forEach(function(page) { %>
+            <form action="/<%= page.slug %>" method="post">
+                <a href="<%= page.slug %>"><%= page.slug %></a>
+                <button type="submit">Delete</button>
+            </form>
+        <% }) %>
+    </div>
+
 </body>
 <html>
